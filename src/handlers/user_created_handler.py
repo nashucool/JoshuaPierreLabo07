@@ -12,6 +12,12 @@ from typing import Dict, Any
 
 class UserCreatedHandler(EventHandler):
     """Handles UserCreated events"""
+
+    TEMPLATE_BY_USER_TYPE = {
+        1: "welcome_client_template.html",
+        2: "welcome_employee_template.html",
+        3: "welcome_manager_template.html",
+    }
     
     def __init__(self, output_dir: str = "output"):
         self.output_dir = output_dir
@@ -25,19 +31,27 @@ class UserCreatedHandler(EventHandler):
     def handle(self, event_data: Dict[str, Any]) -> None:
         """Create an HTML email based on user creation data"""
 
-        user_id = event_data.get('id')
-        name = event_data.get('name')
-        email = event_data.get('email')
-        datetime = event_data.get('datetime')
+        user_id = event_data.get("id")
+        name = event_data.get("name")
+        email = event_data.get("email")
+        creation_date = event_data.get("datetime")
+        user_type_id = int(event_data.get("user_type_id", 1))
 
-        current_file = Path(__file__)
-        project_root = current_file.parent.parent   
-        with open(project_root / "templates" / "welcome_client_template.html", 'r') as file:
+        template_name = self.TEMPLATE_BY_USER_TYPE.get(
+            user_type_id,
+            self.TEMPLATE_BY_USER_TYPE[1],
+        )
+        project_root = Path(__file__).parent.parent
+        with open(
+            project_root / "templates" / template_name,
+            "r",
+            encoding="utf-8",
+        ) as file:
             html_content = file.read()
             html_content = html_content.replace("{{user_id}}", str(user_id))
             html_content = html_content.replace("{{name}}", name)
             html_content = html_content.replace("{{email}}", email)
-            html_content = html_content.replace("{{creation_date}}", datetime)
+            html_content = html_content.replace("{{creation_date}}", creation_date)
         
         filename = os.path.join(self.output_dir, f"welcome_{user_id}.html")
         with open(filename, 'w', encoding='utf-8') as f:

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Au revoir</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #fff8e1; margin: 0; padding: 40px; }
+        .container { background: white; border-radius: 10px; margin: auto; max-width: 560px; padding: 40px; text-align: center; }
+        h1 { color: #ef6c00; }
+        p { color: #444; font-size: 18px; line-height: 1.6; }
+        .user-id { color: #777; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👋 Au revoir, {{name}} !</h1>
+        <p>Merci pour votre leadership et votre contribution à la direction du Magasin du Coin.</p>
+        <p>Nous vous souhaitons beaucoup de succès pour la suite.</p>
+        <p class="user-id">ID directeur supprimé : {{user_id}}</p>
+        <p class="user-id">Adresse courriel : {{email}}</p>
+        <p class="user-id">Compte supprimé le {{deletion_date}}</p>
+    </div>
+</body>
+</html>
